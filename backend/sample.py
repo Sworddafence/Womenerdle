@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_cors import CORS
 import json
 
 
@@ -8,12 +9,18 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'your_secret_key'
-
+CORS(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 #def GrandUser()
-
+def add_comma_between_names(input_string):
+    # Split the input string into a list of names
+    names = input_string.split('\n')
+    
+    # Join the names with commas
+    result = ', '.join(names)
+    return result
 
 class SuperVar(db.Model):
     index = db.Column(db.Integer, primary_key=True)
@@ -203,6 +210,12 @@ def hints():
         ],
         "picture": "gold"
     }
+    return json.dumps(data)
+
+
+@app.route('/lists', methods=['GET'])
+def lists():
+    data = {"array": ["Harriet Tubman", "Ruth Bader Ginsburg", "Amelia Earhart", "Ada Lovelace", "Virginia Woolf", "Maya Angelou", "Rosa Parks", "Serena Williams", "Simone Biles", "Susan B. Anthony", "Cleopatra", "Marie Curie", "Anne Frank", "Rosalind Franklin", "Grace Hopper", "Helen Keller", "Dolly Parton", "Greta Thunberg", "Sojourner Truth", "Ida B. Wells", "Malala Yousafzai", "Joan of Arc", "Emily Wilding Davison", "Emmeline Pankhurst", "Queen Elizabeth I", "Mary Wollstonecraft", "Indira Gandhi", "Chien-Shiung Wu", "Tawakkol Karman", "Wangari Maathai", "Sinead O'Connor", "Toni Morrison", "Anita Hill", "Gloria Steinem", "Angela Davis", "Marsha P. Johnson", "Simone de Beauvoir", "Fannie Lou", "Dolores Huerta", "Frida Kahlo", "Jane Austen", "Florence Nightingale", "Michelle Obama", "Oprah Winfrey", "Emily Dickinson", "Clara Barton", "Audre Lorde", "Mary Shelley", "Jane Goodall", "Hillary Clinton", "Coco Chanel", "Queen Victoria", "Katherine Johnson", "Margaret Atwood", "Anne Sullivan", "Sacagawea", "Marie Antoinette", "Hellen Keller", "Aung San Suu Kyi", "Benazir Bhutto", "Billie Holiday", "Marie Stopes", "Dorothy Hodgkin", "Barbara McClintock", "Kimberle Crenshaw", "Gloria Anzaldúa", "Cherrie Moraga", "Wilma Mankiller", "Qiu Jin", "Leta Hong Fincher", "Ai Xiaoming", "Lu Pin", "Chun Kyung-ja", "Hedy Lamarr", "Barbara Liskov", "Shafi Goldwasser", "Radia Perlman", "Karen Sparck Jones", "Anita Borg", "Marissa Mayer", "Fei-Fei Li", "Jennifer Widom", "Susan Kare", "Mary Lou Jepsen", "Brenda Laurel", "Elizabeth Blackwell", "Virginia Apgar", "Gerty Cori", "Helen Brooke Taussig", "Dorothy Crowfoot Hodgkin", "Christiane Nüsslein-Volhard", "Gertrude B. Elion", "Jane C. Wright", "Mary Edwards Walker", "Patricia Bath", "Pauline Chen", "Rita Levi-Montalcini", "Lynn Margulis", "Elizabeth Blackburn", "Jennifer Doudna", "Carol Greider", "Martha Chase", "Barbara Seaman", "Rachel Carson", "Dian Fossey", "Mary Anning", "Silvia Federici", "Sheila Rowbotham", "Rosa Luxemburg", "Alexandra Kollontai", "Clara Zetkin", "Juliet Mitchell", "Frigga Haug", "Nancy Fraser", "Selma James", "Heidi Hartmann", "Gayatri Chakravorty Spivak", "Maria Mies", "Zillah Eisenstein", "Iris Marion Young", "Silvia Walby", "Colette Guillaumin", "bell hooks", "Lise Vogel", "Nancy Hartsock", "Kate Millett", "Shulamith Firestone", "Rebecca Walker", "Naomi Wolf", "Judith Butler", "Chimamanda Ngozi Adichie", "Jessica Valenti", "Sor Juana Inez de la Cruz", "Rosario Castellanos", "Elena Poniatowska", "Julia de Burgos", "María Felix", "Leona Vicario", "Adela Velarde Pérez", "Graciela Iturbide", "Remedios Varo", "Gabriela Silang", "Cory Aquino", "Lea Salonga", "Miriam Defensor Santiago", "Maria Ressa", "Pia Alonzo Wurtzbach", "Imelda Marcos", "Gloria Macapagal-Arroyo", "Loida Nicolas Lewis", "Gilda Cordero-Fernando", "Ellen Johnson Sirleaf", "Miriam Makeba", "Funmilayo Ransome-Kuti", "Ama Ata Aidoo", "Leymah Gbowee", "Fatou Bensouda", "Lupita Nyong'o", "Yaa Asantewaa" ]}
     return json.dumps(data)
 
 if __name__ == '__main__':
