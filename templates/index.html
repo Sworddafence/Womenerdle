@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Input Bar</title>
+</head>
+<body>
+    <h1>Womenerdle</h1>
+    
+    <form method="post">
+        <label for="user_input">Guess the famous women:</label>
+        <input type="text" id="user_input" name="user_input" required>
+        <button type="submit">Submit</button>
+    </form>
+    
+    {% if user_input %}
+        <p>You entered: {{ user_input }}</p>
+    {% endif %}
+</body>
+</html>
+
