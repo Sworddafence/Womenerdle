@@ -188,6 +188,7 @@ def hints():
     if(superindex.index > 8):
         superindex.index = 1 
     superindex.index = superindex.index + 1
+    db.session.commit()
     fakeuser = db.session.query(User).filter_by(id=(superindex.index-1)).first() 
     
 
