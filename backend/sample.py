@@ -6,7 +6,7 @@ import json
 from databases import db, SuperVar, User
 from multiprocessing import Value
 counter = Value('i', 0)
-
+autocorrectkey = ["Harriet Tubman", "Ruth Bader Ginsburg", "Amelia Earhart", "Ada Lovelace", "Virginia Woolf", "Maya Angelou", "Rosa Parks", "Serena Williams", "Simone Biles", "Susan B. Anthony", "Cleopatra", "Marie Curie", "Anne Frank", "Rosalind Franklin", "Grace Hopper", "Helen Keller", "Dolly Parton", "Greta Thunberg", "Sojourner Truth", "Ida B. Wells", "Malala Yousafzai", "Joan of Arc", "Emily Wilding Davison", "Emmeline Pankhurst", "Queen Elizabeth I", "Mary Wollstonecraft", "Indira Gandhi", "Chien-Shiung Wu", "Tawakkol Karman", "Wangari Maathai", "Sinead O'Connor", "Toni Morrison", "Anita Hill", "Gloria Steinem", "Angela Davis", "Marsha P. Johnson", "Simone de Beauvoir", "Fannie Lou", "Dolores Huerta", "Frida Kahlo", "Jane Austen", "Florence Nightingale", "Michelle Obama", "Oprah Winfrey", "Emily Dickinson", "Clara Barton", "Audre Lorde", "Mary Shelley", "Jane Goodall", "Hillary Clinton", "Coco Chanel", "Queen Victoria", "Katherine Johnson", "Margaret Atwood", "Anne Sullivan", "Sacagawea", "Marie Antoinette", "Hellen Keller", "Aung San Suu Kyi", "Benazir Bhutto", "Billie Holiday", "Marie Stopes", "Dorothy Hodgkin", "Barbara McClintock", "Kimberle Crenshaw", "Gloria Anzaldúa", "Cherrie Moraga", "Wilma Mankiller", "Qiu Jin", "Leta Hong Fincher", "Ai Xiaoming", "Lu Pin", "Chun Kyung-ja", "Hedy Lamarr", "Barbara Liskov", "Shafi Goldwasser", "Radia Perlman", "Karen Sparck Jones", "Anita Borg", "Marissa Mayer", "Fei-Fei Li", "Jennifer Widom", "Susan Kare", "Mary Lou Jepsen", "Brenda Laurel", "Elizabeth Blackwell", "Virginia Apgar", "Gerty Cori", "Helen Brooke Taussig", "Dorothy Crowfoot Hodgkin", "Christiane Nüsslein-Volhard", "Gertrude B. Elion", "Jane C. Wright", "Mary Edwards Walker", "Patricia Bath", "Pauline Chen", "Rita Levi-Montalcini", "Lynn Margulis", "Elizabeth Blackburn", "Jennifer Doudna", "Carol Greider", "Martha Chase", "Barbara Seaman", "Rachel Carson", "Dian Fossey", "Mary Anning", "Silvia Federici", "Sheila Rowbotham", "Rosa Luxemburg", "Alexandra Kollontai", "Clara Zetkin", "Juliet Mitchell", "Frigga Haug", "Nancy Fraser", "Selma James", "Heidi Hartmann", "Gayatri Chakravorty Spivak", "Maria Mies", "Zillah Eisenstein", "Iris Marion Young", "Silvia Walby", "Colette Guillaumin", "bell hooks", "Lise Vogel", "Nancy Hartsock", "Kate Millett", "Shulamith Firestone", "Rebecca Walker", "Naomi Wolf", "Judith Butler", "Chimamanda Ngozi Adichie", "Jessica Valenti", "Sor Juana Inez de la Cruz", "Rosario Castellanos", "Elena Poniatowska", "Julia de Burgos", "María Felix", "Leona Vicario", "Adela Velarde Pérez", "Graciela Iturbide", "Remedios Varo", "Gabriela Silang", "Cory Aquino", "Lea Salonga", "Miriam Defensor Santiago", "Maria Ressa", "Pia Alonzo Wurtzbach", "Imelda Marcos", "Gloria Macapagal-Arroyo", "Loida Nicolas Lewis", "Gilda Cordero-Fernando", "Ellen Johnson Sirleaf", "Miriam Makeba", "Funmilayo Ransome-Kuti", "Ama Ata Aidoo", "Leymah Gbowee", "Fatou Bensouda", "Lupita Nyong'o", "Yaa Asantewaa" ]
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -36,7 +36,8 @@ def add_comma_between_names(input_string):
 #     hint3 = db.Column(db.String(120), unique=False, nullable=False)
 #     hint4 = db.Column(db.String(120), unique=False, nullable=False)
 #     hint5 = db.Column(db.String(120), unique=False, nullable=False)
-
+class autocorrect(db.Model):
+    name = db.Column(db.String(120), primary_key=True, unique=True)
 
 with app.app_context():
     db.create_all()
@@ -58,7 +59,6 @@ def home():
         'index': 0
     }
 
-    # user_to_delete = User.query.filter_by(hint1="Second female justice on the U.S. Supreme Court.").first()
     # if user_to_delete:
     #     db.session.delete(user_to_delete)
     #     db.session.commit()
@@ -89,7 +89,10 @@ def home():
         # Create a new user
         new_user = User(**new_user_data)
         db.session.add(new_user)
-        
+    
+
+    new_auto = autocorrect()
+
     db.session.commit()
 
     # Fetch all users
@@ -236,6 +239,7 @@ def hints():
 def lists():
     data = {"array": ["Harriet Tubman", "Ruth Bader Ginsburg", "Amelia Earhart", "Ada Lovelace", "Virginia Woolf", "Maya Angelou", "Rosa Parks", "Serena Williams", "Simone Biles", "Susan B. Anthony", "Cleopatra", "Marie Curie", "Anne Frank", "Rosalind Franklin", "Grace Hopper", "Helen Keller", "Dolly Parton", "Greta Thunberg", "Sojourner Truth", "Ida B. Wells", "Malala Yousafzai", "Joan of Arc", "Emily Wilding Davison", "Emmeline Pankhurst", "Queen Elizabeth I", "Mary Wollstonecraft", "Indira Gandhi", "Chien-Shiung Wu", "Tawakkol Karman", "Wangari Maathai", "Sinead O'Connor", "Toni Morrison", "Anita Hill", "Gloria Steinem", "Angela Davis", "Marsha P. Johnson", "Simone de Beauvoir", "Fannie Lou", "Dolores Huerta", "Frida Kahlo", "Jane Austen", "Florence Nightingale", "Michelle Obama", "Oprah Winfrey", "Emily Dickinson", "Clara Barton", "Audre Lorde", "Mary Shelley", "Jane Goodall", "Hillary Clinton", "Coco Chanel", "Queen Victoria", "Katherine Johnson", "Margaret Atwood", "Anne Sullivan", "Sacagawea", "Marie Antoinette", "Hellen Keller", "Aung San Suu Kyi", "Benazir Bhutto", "Billie Holiday", "Marie Stopes", "Dorothy Hodgkin", "Barbara McClintock", "Kimberle Crenshaw", "Gloria Anzaldúa", "Cherrie Moraga", "Wilma Mankiller", "Qiu Jin", "Leta Hong Fincher", "Ai Xiaoming", "Lu Pin", "Chun Kyung-ja", "Hedy Lamarr", "Barbara Liskov", "Shafi Goldwasser", "Radia Perlman", "Karen Sparck Jones", "Anita Borg", "Marissa Mayer", "Fei-Fei Li", "Jennifer Widom", "Susan Kare", "Mary Lou Jepsen", "Brenda Laurel", "Elizabeth Blackwell", "Virginia Apgar", "Gerty Cori", "Helen Brooke Taussig", "Dorothy Crowfoot Hodgkin", "Christiane Nüsslein-Volhard", "Gertrude B. Elion", "Jane C. Wright", "Mary Edwards Walker", "Patricia Bath", "Pauline Chen", "Rita Levi-Montalcini", "Lynn Margulis", "Elizabeth Blackburn", "Jennifer Doudna", "Carol Greider", "Martha Chase", "Barbara Seaman", "Rachel Carson", "Dian Fossey", "Mary Anning", "Silvia Federici", "Sheila Rowbotham", "Rosa Luxemburg", "Alexandra Kollontai", "Clara Zetkin", "Juliet Mitchell", "Frigga Haug", "Nancy Fraser", "Selma James", "Heidi Hartmann", "Gayatri Chakravorty Spivak", "Maria Mies", "Zillah Eisenstein", "Iris Marion Young", "Silvia Walby", "Colette Guillaumin", "bell hooks", "Lise Vogel", "Nancy Hartsock", "Kate Millett", "Shulamith Firestone", "Rebecca Walker", "Naomi Wolf", "Judith Butler", "Chimamanda Ngozi Adichie", "Jessica Valenti", "Sor Juana Inez de la Cruz", "Rosario Castellanos", "Elena Poniatowska", "Julia de Burgos", "María Felix", "Leona Vicario", "Adela Velarde Pérez", "Graciela Iturbide", "Remedios Varo", "Gabriela Silang", "Cory Aquino", "Lea Salonga", "Miriam Defensor Santiago", "Maria Ressa", "Pia Alonzo Wurtzbach", "Imelda Marcos", "Gloria Macapagal-Arroyo", "Loida Nicolas Lewis", "Gilda Cordero-Fernando", "Ellen Johnson Sirleaf", "Miriam Makeba", "Funmilayo Ransome-Kuti", "Ama Ata Aidoo", "Leymah Gbowee", "Fatou Bensouda", "Lupita Nyong'o", "Yaa Asantewaa" ]}
     return json.dumps(data)
+    
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)
