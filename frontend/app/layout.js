@@ -2,7 +2,7 @@ import "./globals.css";
 import "@mantine/core/styles.css";
 import '@mantine/notifications/styles.css';
 
-import React from "react";import { MantineProvider, ColorSchemeScript, Title } from "@mantine/core";
+import React from "react";import { MantineProvider, ColorSchemeScript, createTheme, rem, Button, Autocomplete } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 
 export const metadata = {
@@ -11,11 +11,24 @@ export const metadata = {
 };
 
 
+const theme = createTheme({
+  fontFamily: 'proxima-nova, sans-serif',
+  primaryColor: 'bright-pink',
+  colors: {
+    'bright-pink': ['#ffc0ad', '#ffc0adF', '#ffc0ad', '#ffc0ad', '#ffc0ad', '#ffc0ad', '#ffc0ad', '#ffc0ad', '#ffc0ad', '#ffc0ad'],
+    'blue': ['#ffc0ad', '#ffc0adF', '#ffc0ad', '#ffc0ad', '#ffc0ad', '#ffc0ad', '#ffc0ad', '#ffc0ad', '#ffc0ad', '#ffc0ad'],
+    'red': ['#55423d', '#55423d', '#55423d', '#55423d', '#55423d', '#55423d', '#55423d', '#55423d', '#55423d', '#55423d'],
+  },
+  white: "#ffc0ad",
+  black: "#271c19"
+
+});
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <ColorSchemeScript defaultColorScheme="dark"/>
+        <MantineProvider theme={theme}/>
         <link rel="shortcut icon" href="/favicon.svg" />
         <meta
           name="viewport"
@@ -23,10 +36,10 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
-        <MantineProvider defaultColorScheme="dark">
+        <MantineProvider theme={theme}>
           <Notifications/>
           <div className="flex flex-col items-center">
-            <Title className="pt-8 pb-4 flex">Shenius</Title>
+            <Title className="text-[#fffffe] pt-8 pb-4 flex">Shenius</Title>
           </div>
           {children}
         </MantineProvider>
