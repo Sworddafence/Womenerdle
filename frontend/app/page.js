@@ -64,21 +64,21 @@ export default function HomePage() {
 
   const blur = ['blur-lg', 'blur-md', 'blur', 'blur-sm', 'blur-none'][hintIndex]
 
-  return <main className="flex min-h-screen flex-col items-center p-8">
-    <Title className="pb-4">Shenius</Title>
+  return <main className="bg-[#55423d] flex min-h-screen flex-col items-center p-8">
+    <Title className="text-[#fffffe] pb-4">Shenius</Title>
     <Skeleton width={300} visible={image == ""}>
       <Image src={'/pictures/' + image} width={300} height={300} className={'duration-100 my-4 ' + blur}/>
     </Skeleton>
-    <Box bg="dark.9" className="rounded p-4 m-4 text-center" maw={500}>
+    <Box bg="blue" className="rounded p-4 m-4 text-center" style={{borderwidth: '3px', bordercolor: '#271c19', color:"#271c19"}} maw={500}>
       <Hint hint={hint}></Hint>
     </Box>
     <div>
       {
         [1, 2, 3, 4, 5].map(i => {
           if (i <= hintIndex + 1)
-            return <Button key={i} className="mx-2 my-4" radius={1000} onClick={() => setHint(hints[i - 1])}>{i}</Button>
+            return <Button key={i} className="mx-2 my-4" style={{borderWidth: '3px', borderColor: '#271c19', color:"#271c19"}} radius={1000} onClick={() => setHint(hints[i - 1])}>{i}</Button>
           else
-            return <Button key={i} className="mx-2 my-4" radius={1000} disabled>{i}</Button>
+            return <Button key={i} className="mx-2 my-4 text-red" bg="#55423d" style={{borderWidth: '3px', borderColor: '#271c19', color:"#fff3ec"}} radius={1000} disabled>{i}</Button>
         })
       }
     </div>

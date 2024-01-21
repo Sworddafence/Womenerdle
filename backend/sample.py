@@ -272,7 +272,7 @@ def score_add():
         }
         players_data.append(player_data)
 
-    return json.dump({'players': players_data})
+    return jsonify({'players': players_data})
 
 
 @app.route('/score', methods=['GET', 'POST'])
@@ -293,7 +293,7 @@ def score():
         }
         players_data.append(player_data)
 
-    return json.dump({'players': players_data})
+    return jsonify({'players': players_data})
   
 @app.route('/picture_upload', methods=['POST'])
 def pictures():
