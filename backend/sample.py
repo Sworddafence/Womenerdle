@@ -247,7 +247,8 @@ def lists():
     
 @app.route('/picture_upload', methods=['POST'])
 def pictures():
-    
+    data = request.form
+    return json.dumps("jphnklsadjf")
 
 
 
