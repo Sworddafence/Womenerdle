@@ -1,9 +1,10 @@
 'use client';
 
-import { Autocomplete, Box, Button, Title } from "@mantine/core";
+import { Autocomplete, Box, Button, Skeleton, Title } from "@mantine/core";
 import Hint from "./components/Hint";
 import { useState, useEffect } from "react";
 import { notifications } from "@mantine/notifications";
+import Image from "next/image";
 
 export default function HomePage() {
   const [hints, setHints] = useState([]);
@@ -12,9 +13,12 @@ export default function HomePage() {
 
   const [womanList, setWomanList] = useState([]);
 
+  const [image, setImage] = useState("");
 
   const [answer, setAnswer] = useState("");
   const [guess, setGuess] = useState("");
+
+  const [gameOver, setGameOver] = useState(false);
 
   useEffect(() => {
     fetch("http://localhost:5000/hints")
@@ -25,6 +29,8 @@ export default function HomePage() {
           setHintIndex(0)
 
           setAnswer(data.name)
+
+          setImage(data.picture)
         });
 
     fetch("http://localhost:5000/lists")
@@ -34,24 +40,36 @@ export default function HomePage() {
     }, []);
 
 
+
+
   const check = (e) => {
     e.preventDefault()
     if (guess === answer) {
       notifications.show({ title: "Correct!", message: "You guessed correctly!", color: "green" });
+      setHintIndex(5)
+      setGameOver(true)
     } else {
       if (hintIndex < 4) {
         notifications.show({ title: "Wrong!", message: "You guessed wrong! Try again!", color: "red" });
         setHintIndex(hintIndex + 1)
         setHint(hints[hintIndex + 1])
       } else {
-        notifications.show({ title: "Game over.", message: "Womp womp", color: "red" });
+        if (!gameOver) {
+          notifications.show({ title: "Game over.", message: "Womp womp", color: "red" });
+          setGameOver(true)
+        }
       }
     }
   }
 
+  const blur = ['blur-lg', 'blur-md', 'blur', 'blur-sm', 'blur-none'][hintIndex]
+
   return <main className="flex min-h-screen flex-col items-center p-8">
-    <Title className="pb-4">Womenerdle</Title>
-    <Box bg="dark.9" className="rounded p-4 m-4">
+    <Title className="pb-4">Shenius</Title>
+    <Skeleton width={300} visible={image == ""}>
+      <Image src={'/pictures/' + image} width={300} height={300} className={'duration-100 my-4 ' + blur}/>
+    </Skeleton>
+    <Box bg="dark.9" className="rounded p-4 m-4 text-center" maw={500}>
       <Hint hint={hint}></Hint>
     </Box>
     <div>
@@ -65,10 +83,13 @@ export default function HomePage() {
       }
     </div>
 
-    <form className="flex flex-row items-end m-4">
-      <Autocomplete data={womanList.sort()} limit={6} placeholder="Guess a historic woman!" onChange={setGuess}/>
-      <Button onClick={check}>Check</Button>
+    <form className="flex flex-row items-end m-4" onSubmit={check}>
+      <Autocomplete data={womanList.sort()} limit={6} placeholder="Guess a historic woman!" onChange={setGuess} disabled={gameOver}/>
+      <Button onClick={check} disabled={gameOver}>Check</Button>
     </form>
 
+    {gameOver &&
+      <Button onClick={() => window.location.reload()} className="m-4">Next Game</Button>
+    }
   </main>;
 }
