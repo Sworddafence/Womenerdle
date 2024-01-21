@@ -50,7 +50,7 @@ export default function HomePage() {
   }
 
   return <main className="flex min-h-screen flex-col items-center p-8">
-    <Title>Womenerdle</Title>
+    <Title className="pb-4">Womenerdle</Title>
     <Box bg="dark.9" className="rounded p-4 m-4">
       <Hint hint={hint}></Hint>
     </Box>
@@ -66,7 +66,7 @@ export default function HomePage() {
     </div>
 
     <form className="flex flex-row items-end m-4">
-      <Autocomplete data={womanList} limit={6} placeholder="Guess a historic woman!" onChange={setGuess}/>
+      <Autocomplete data={womanList.sort()} limit={6} placeholder="Guess a historic woman!" onChange={setGuess}/>
       <Button onClick={check}>Check</Button>
     </form>
 
