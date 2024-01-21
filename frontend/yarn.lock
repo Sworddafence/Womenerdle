@@ -660,6 +660,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/canvas-confetti@npm:^1.6.4":
+  version: 1.6.4
+  resolution: "@types/canvas-confetti@npm:1.6.4"
+  checksum: 4a821690f0b9cdd81b0d02c0946c5b4e9e80f189e868fd8a159884d5eb9da0bdf0bfc380a61c971cc5d7b9ca2521625d46bcb5e4653988375118f57523ebe5a4
+  languageName: node
+  linkType: hard
+
 "@types/json5@npm:^0.0.29":
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
@@ -1415,6 +1422,13 @@ __metadata:
   version: 1.0.30001579
   resolution: "caniuse-lite@npm:1.0.30001579"
   checksum: 4003970f8d01a5fa314e39f4a21751dc750a530f3d19aed225e18e8e02892b590b8b0debfa0961eae9bc0e49b77bfb17cf30d2469540e428a8305e3cc9164fb8
+  languageName: node
+  linkType: hard
+
+"canvas-confetti@npm:^1.9.2":
+  version: 1.9.2
+  resolution: "canvas-confetti@npm:1.9.2"
+  checksum: 6247eb95bf710522f5822728dc29d74d0747b7ca0a85dfa90fd159f0f405527fbaedbdbb0e6917f6cd1560cf1355286c2c94bd3e89bc2147fb0fcf8e1c64126a
   languageName: node
   linkType: hard
 
@@ -3996,8 +4010,10 @@ __metadata:
     postcss-preset-mantine: "npm:1.12.3"
     postcss-simple-vars: "npm:^7.0.1"
     react: "npm:18.2.0"
+    react-canvas-confetti: "npm:^2.0.5"
     react-dom: "npm:18.2.0"
     sharp: "npm:^0.33.2"
+    tabler-icons-react: "npm:^1.56.0"
     tailwind: "npm:^4.0.0"
     tailwindcss: "npm:^3.4.1"
     typescript: "npm:5.2.2"
@@ -4964,6 +4980,18 @@ __metadata:
     iconv-lite: "npm:0.4.23"
     unpipe: "npm:1.0.0"
   checksum: 5aff0726e89f24f63f1bd4e02d0a36380040a468a9430820eba41d93bb524863e61241a489acf0aaca306a20e5ee2067ce00371700c7fc407b950052acbf5c47
+  languageName: node
+  linkType: hard
+
+"react-canvas-confetti@npm:^2.0.5":
+  version: 2.0.5
+  resolution: "react-canvas-confetti@npm:2.0.5"
+  dependencies:
+    "@types/canvas-confetti": "npm:^1.6.4"
+    canvas-confetti: "npm:^1.9.2"
+  peerDependencies:
+    react: "*"
+  checksum: c6094fad7e53989602c4f177806b16c631ddd16c8d343e12a150c828dbfd9c536627c9949d741c6ba40b7fadd4bb424c1c0022b030bbfb98b6b961e3d012ac09
   languageName: node
   linkType: hard
 
@@ -5940,6 +5968,15 @@ __metadata:
   version: 6.1.1
   resolution: "tabbable@npm:6.1.1"
   checksum: 72aae6dde28c79433f8fdb20d26c91873bb57ae8d4af6924bdb08a7c9213e210c6dc299dda13186b825ebd77398a5fd9ce01fecbb5201b00c6665bb6055094c7
+  languageName: node
+  linkType: hard
+
+"tabler-icons-react@npm:^1.56.0":
+  version: 1.56.0
+  resolution: "tabler-icons-react@npm:1.56.0"
+  peerDependencies:
+    react: ">= 16.8.0"
+  checksum: 65706011940ead0c6e39771fddce31aae11966e31a1da5bbddeaaa2b4d00b589fbdb8722bbd90af2a537ea2a69ff78b254c6f59bca04b02dca3deac38e1d2615
   languageName: node
   linkType: hard
 

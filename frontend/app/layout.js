@@ -1,3 +1,4 @@
+import "./globals.css";
 import "@mantine/core/styles.css";
 import '@mantine/notifications/styles.css';
 
@@ -9,7 +10,6 @@ export const metadata = {
   description: "game",
 };
 
-import "./globals.css";
 
 const theme = createTheme({
   fontFamily: 'proxima-nova, sans-serif',
@@ -38,6 +38,9 @@ export default function RootLayout({ children }) {
       <body>
         <MantineProvider theme={theme}>
           <Notifications/>
+          <div className="flex flex-col items-center">
+            <Title className="text-[#fffffe] pt-8 pb-4 flex">Shenius</Title>
+          </div>
           {children}
         </MantineProvider>
       </body>
