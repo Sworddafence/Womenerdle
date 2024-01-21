@@ -5,7 +5,7 @@ Guess Who? Shenius Game is an interactive web game where players guess influenti
 ## How to Play
 
 1. **Start Game:**
-   - Visit the [Shenius Game](#) website to start the game.
+   - Visit the [Shenius Game](www.shenius.tech) website to start the game.
 
 2. **Guess the Woman:**
    - You will be presented with five clues about an influential woman.
