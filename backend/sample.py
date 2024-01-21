@@ -1,13 +1,17 @@
 
 from flask import Flask, render_template, request, redirect, session, jsonify
 from crypt import methods
+from pickletools import read_uint1
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
 import json
 from databases import db, SuperVar, User, Player
 from multiprocessing import Value
+from os.path import join
+import os
 counter = Value('i', 0)
+NUMOFWOMEN = Value('i', 10)
 autocorrectkey = ["Harriet Tubman", "Ruth Bader Ginsburg", "Amelia Earhart", "Ada Lovelace", "Virginia Woolf", "Maya Angelou", "Rosa Parks", "Serena Williams", "Simone Biles", "Susan B. Anthony", "Cleopatra", "Marie Curie", "Anne Frank", "Rosalind Franklin", "Grace Hopper", "Helen Keller", "Dolly Parton", "Greta Thunberg", "Sojourner Truth", "Ida B. Wells", "Malala Yousafzai", "Joan of Arc", "Emily Wilding Davison", "Emmeline Pankhurst", "Queen Elizabeth I", "Mary Wollstonecraft", "Indira Gandhi", "Chien-Shiung Wu", "Tawakkol Karman", "Wangari Maathai", "Sinead O'Connor", "Toni Morrison", "Anita Hill", "Gloria Steinem", "Angela Davis", "Marsha P. Johnson", "Simone de Beauvoir", "Fannie Lou", "Dolores Huerta", "Frida Kahlo", "Jane Austen", "Florence Nightingale", "Michelle Obama", "Oprah Winfrey", "Emily Dickinson", "Clara Barton", "Audre Lorde", "Mary Shelley", "Jane Goodall", "Hillary Clinton", "Coco Chanel", "Queen Victoria", "Katherine Johnson", "Margaret Atwood", "Anne Sullivan", "Sacagawea", "Marie Antoinette", "Hellen Keller", "Aung San Suu Kyi", "Benazir Bhutto", "Billie Holiday", "Marie Stopes", "Dorothy Hodgkin", "Barbara McClintock", "Kimberle Crenshaw", "Gloria Anzaldúa", "Cherrie Moraga", "Wilma Mankiller", "Qiu Jin", "Leta Hong Fincher", "Ai Xiaoming", "Lu Pin", "Chun Kyung-ja", "Hedy Lamarr", "Barbara Liskov", "Shafi Goldwasser", "Radia Perlman", "Karen Sparck Jones", "Anita Borg", "Marissa Mayer", "Fei-Fei Li", "Jennifer Widom", "Susan Kare", "Mary Lou Jepsen", "Brenda Laurel", "Elizabeth Blackwell", "Virginia Apgar", "Gerty Cori", "Helen Brooke Taussig", "Dorothy Crowfoot Hodgkin", "Christiane Nüsslein-Volhard", "Gertrude B. Elion", "Jane C. Wright", "Mary Edwards Walker", "Patricia Bath", "Pauline Chen", "Rita Levi-Montalcini", "Lynn Margulis", "Elizabeth Blackburn", "Jennifer Doudna", "Carol Greider", "Martha Chase", "Barbara Seaman", "Rachel Carson", "Dian Fossey", "Mary Anning", "Silvia Federici", "Sheila Rowbotham", "Rosa Luxemburg", "Alexandra Kollontai", "Clara Zetkin", "Juliet Mitchell", "Frigga Haug", "Nancy Fraser", "Selma James", "Heidi Hartmann", "Gayatri Chakravorty Spivak", "Maria Mies", "Zillah Eisenstein", "Iris Marion Young", "Silvia Walby", "Colette Guillaumin", "bell hooks", "Lise Vogel", "Nancy Hartsock", "Kate Millett", "Shulamith Firestone", "Rebecca Walker", "Naomi Wolf", "Judith Butler", "Chimamanda Ngozi Adichie", "Jessica Valenti", "Sor Juana Inez de la Cruz", "Rosario Castellanos", "Elena Poniatowska", "Julia de Burgos", "María Felix", "Leona Vicario", "Adela Velarde Pérez", "Graciela Iturbide", "Remedios Varo", "Gabriela Silang", "Cory Aquino", "Lea Salonga", "Miriam Defensor Santiago", "Maria Ressa", "Pia Alonzo Wurtzbach", "Imelda Marcos", "Gloria Macapagal-Arroyo", "Loida Nicolas Lewis", "Gilda Cordero-Fernando", "Ellen Johnson Sirleaf", "Miriam Makeba", "Funmilayo Ransome-Kuti", "Ama Ata Aidoo", "Leymah Gbowee", "Fatou Bensouda", "Lupita Nyong'o", "Yaa Asantewaa" ]
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
@@ -68,10 +72,7 @@ def home():
     all_super_vars = db.session.query(SuperVar).all()
     super_var = None
     for super_var in all_super_vars:
-        print(super_var.index)
-        super_var.index = super_var.index + 1
-        if(super_var.index > 8):
-            super_var.index = 1
+        super_var.index = 10
         
 
 
@@ -88,7 +89,6 @@ def home():
         db.session.add(new_user)
     
 
-    new_auto = autocorrect()
 
     db.session.commit()
 
@@ -214,7 +214,7 @@ def hints():
         counter.value += 1
         out = counter.value
 
-    index = (out % 10)+1
+    index = (out % NUMOFWOMEN.value)+1
     fakeuser = db.session.query(User).filter_by(id=(index)).first() 
     data = {
         "name": fakeuser.name,
@@ -298,9 +298,40 @@ def score():
   
 @app.route('/picture_upload', methods=['POST'])
 def pictures():
-    data = request.form
-    return json.dumps("jphnklsadjf")
+    if request.method == 'POST':
+        g_file = request.files
+        print('Creating a new file')
+        image = g_file['image']
+        image.save(os.path.join("../", "epic.jpeg"))
+        with NUMOFWOMEN.get_lock():
+            NUMOFWOMEN.value += 1
+        #binary_file = open("my_file.jpeg", "wb")
+        #binary_file.write(g_file)
+        #binary_file.close()
+        print(g_file)
+        return NUMOFWOMEN.value 
+
+@app.route('/hints_upload', methods=['POST'])
+def hintsup():
+    if request.method == 'POST':
+        inputfile = request.get_json()
+        print(inputfile)
+        new_user_data = {
+            'name': inputfile.get('name'),
+            'hint1': inputfile.get('hints')[0],
+            'hint2': inputfile.get('hints')[1],
+            'hint3': inputfile.get('hints')[2],
+            'hint4': inputfile.get('hints')[3],
+            'hint5': inputfile.get('hints')[4],
+        }
+        new_user = User(**new_user_data)
+        db.session.add(new_user)
+        db.session.commit()
+        return "bob"
+
+
 
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)
+
