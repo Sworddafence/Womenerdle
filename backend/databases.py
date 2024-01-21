@@ -18,4 +18,10 @@ class User(db.Model):
     hint4 = db.Column(db.String(120), unique=False, nullable=False)
     hint5 = db.Column(db.String(120), unique=False, nullable=False)
 
+class Player(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    
+    name = db.Column(db.String(120), unique=False, nullable=False)
+    score = db.Column(db.Integer, unique = False)
+
 

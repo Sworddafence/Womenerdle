@@ -5,7 +5,7 @@ import React from "react";import { MantineProvider, ColorSchemeScript } from "@m
 import { Notifications } from "@mantine/notifications";
 
 export const metadata = {
-  title: "Womenerdle",
+  title: "Shenius",
   description: "game",
 };
 
