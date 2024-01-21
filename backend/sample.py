@@ -216,10 +216,8 @@ def hints():
         counter.value += 1
         out = counter.value
 
-    index = (out % 8)+1
+    index = (out % 10)+1
     fakeuser = db.session.query(User).filter_by(id=(index)).first() 
-    
-
     data = {
         "name": fakeuser.name,
         "array": [
@@ -229,7 +227,7 @@ def hints():
             fakeuser.hint4,
             fakeuser.hint5
         ],
-        "picture": "gold"
+        "picture": f"/Womenerdle/pictures/{index}/5.jpeg"
     }
     return json.dumps(data)
 
