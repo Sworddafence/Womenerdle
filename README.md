@@ -38,7 +38,7 @@ A scoreboard showcasing users' scores and ranks.
 
 ## Try It Out
 
-Visit [Shenius Game](www.shenius.tech) to play the game and test your knowledge about influential women!
+Visit [Shenius Game](https://shenius.tech/) to play the game and test your knowledge about influential women!
 
 
 ## Acknowledgments
