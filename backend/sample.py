@@ -1,4 +1,6 @@
+
 from flask import Flask, render_template, request, redirect, session, jsonify
+from crypt import methods
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
@@ -223,7 +225,7 @@ def hints():
             fakeuser.hint4,
             fakeuser.hint5
         ],
-        "picture": f"/Womenerdle/pictures/{index}/5.jpeg"
+        "picture": f"{index}/5.jpeg"
     }
     return json.dumps(data)
 
@@ -293,6 +295,12 @@ def score():
         players_data.append(player_data)
 
     return json.dump({'players': players_data})
+  
+@app.route('/picture_upload', methods=['POST'])
+def pictures():
+    data = request.form
+    return json.dumps("jphnklsadjf")
+
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)
