@@ -1,6 +1,6 @@
 # Shenius Game
 
-Guess Who? Shenius Game is an interactive web game where players guess influential women based on five clues. Test your knowledge about remarkable women who have made significant contributions in various fields.
+Guess Who? Shenius Game is an interactive web game where players guess influential women based on five clues and a blurred picture that will gradually unblur with each hint. Test your knowledge about remarkable women who have made significant contributions in various fields.
 
 ## How to Play
 
