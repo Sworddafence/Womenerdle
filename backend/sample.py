@@ -3,14 +3,17 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
 import json
-
+from databases import db, SuperVar, User
+from multiprocessing import Value
+counter = Value('i', 0)
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'your_secret_key'
 CORS(app)
-db = SQLAlchemy(app)
+#db = SQLAlchemy(app)
+db.init_app(app)
 migrate = Migrate(app, db)
 
 #def GrandUser()
@@ -22,17 +25,17 @@ def add_comma_between_names(input_string):
     result = ', '.join(names)
     return result
 
-class SuperVar(db.Model):
-    index = db.Column(db.Integer, primary_key=True)
+# class SuperVar(db.Model):
+#     index = db.Column(db.Integer, primary_key=True)
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=False, nullable=False)
-    hint1 = db.Column(db.String(120), unique=False, nullable=False)
-    hint2 = db.Column(db.String(120), unique=False, nullable=False)
-    hint3 = db.Column(db.String(120), unique=False, nullable=False)
-    hint4 = db.Column(db.String(120), unique=False, nullable=False)
-    hint5 = db.Column(db.String(120), unique=False, nullable=False)
+# class User(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(80), unique=False, nullable=False)
+#     hint1 = db.Column(db.String(120), unique=False, nullable=False)
+#     hint2 = db.Column(db.String(120), unique=False, nullable=False)
+#     hint3 = db.Column(db.String(120), unique=False, nullable=False)
+#     hint4 = db.Column(db.String(120), unique=False, nullable=False)
+#     hint5 = db.Column(db.String(120), unique=False, nullable=False)
 
 
 with app.app_context():
@@ -44,19 +47,27 @@ def home():
     #return render_template('index.html', user_input=None)
     # Creating a dummy user for demonstration purposes
     new_user_data = {
-        'name': 'd4',
-        'hint1': 'd',
-        'hint2': 'd',
-        'hint3': 'd',
-        'hint4': 'd',
-        'hint5': 'd',
+        'name': 'Maya Angelou',
+        'hint1': 'Renowned poet, memoirist, and civil rights activist.',
+        'hint2': 'Wrote the autobiographical novel "I Know Why the Caged Bird Sings.',
+        'hint3': 'Worked with Martin Luther King Jr. and Malcolm X in the civil rights movement.',
+        'hint4': 'Recited a poem at President Bill Clinton\'s inauguration.',
+        'hint5': 'Received numerous awards, including the Presidential Medal of Freedom.',
     }
     new_index = {
         'index': 0
     }
 
+    # user_to_delete = User.query.filter_by(hint1="Second female justice on the U.S. Supreme Court.").first()
+    # if user_to_delete:
+    #     db.session.delete(user_to_delete)
+    #     db.session.commit()
+    #     print(f"User  deleted successfully.")
+    # else:
+    #     print(f"User not found.")
 
     all_super_vars = db.session.query(SuperVar).all()
+    super_var = None
     for super_var in all_super_vars:
         print(super_var.index)
         super_var.index = super_var.index + 1
@@ -87,6 +98,12 @@ def home():
         plusone = 1
     user = db.session.query(User).filter_by(id=plusone).first() 
     fakeuser = db.session.query(User).filter_by(id=(super_var.index)).first()
+
+    print(f"user: {user}")
+    print(f"session['index']: {session.get('index')}")
+    if user is None or fakeuser is None:
+    # Add more debugging information
+        print(f"Error: Unable to fetch user or fakeuser. plusone: {plusone}, super_var.index: {super_var.index}")
     #users = User.query.all()
     if request.method == 'POST':
         user_input = request.form['user_input']
@@ -97,6 +114,9 @@ def home():
         else:
             user_input="FAIIIIIIL"
             return redirect("/two")
+        
+    print(f"user: {user}")
+    print(f"session['index']: {session.get('index')}")
     return render_template('index.html', user=user, num = plusone )
 
 @app.route('/two', methods=['GET', 'POST'])
@@ -120,8 +140,9 @@ def home_two():
 
 @app.route('/three', methods=['GET', 'POST'])
 def home_three():
-    #db.session.query(User).delete()
-    #db.session.commit()
+    #DROPS DATABASE
+    # db.session.query(User).delete()
+    # db.session.commit()
     index = session.get('index') 
     user = db.session.query(User).filter_by(id=index).first() 
     fakeuser = db.session.query(User).filter_by(id=(index-1)).first()
@@ -191,12 +212,12 @@ def success():
 
 @app.route('/hints', methods=['GET'])
 def hints():
-    superindex = db.session.query(SuperVar).first()       
-    if(superindex.index > 8):
-        superindex.index = 1 
-    superindex.index = superindex.index + 1
-    db.session.commit()
-    fakeuser = db.session.query(User).filter_by(id=(superindex.index-1)).first() 
+    with counter.get_lock():
+        counter.value += 1
+        out = counter.value
+
+    index = (out % 8)+1
+    fakeuser = db.session.query(User).filter_by(id=(index)).first() 
     
 
     data = {
