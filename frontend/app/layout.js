@@ -1,3 +1,4 @@
+import "./globals.css";
 import "@mantine/core/styles.css";
 import '@mantine/notifications/styles.css';
 
@@ -9,7 +10,6 @@ export const metadata = {
   description: "game",
 };
 
-import "./globals.css";
 
 export default function RootLayout({ children }) {
   return (
