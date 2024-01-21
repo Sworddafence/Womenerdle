@@ -1,12 +1,14 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import { Autocomplete, Box, Button, Skeleton, Title } from "@mantine/core";
+import { ActionIcon, Autocomplete, Box, Button, Skeleton, Title } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import Image from "next/image";
 import Hint from "./components/Hint";
 import Confetti from "./components/Confetti";
 import Fireworks from "react-canvas-confetti/dist/presets/fireworks";
+import { Plus } from "tabler-icons-react";
+import Link from "next/link";
 
 export default function HomePage() {
   const [hints, setHints] = useState([]);
@@ -66,11 +68,15 @@ export default function HomePage() {
 
   const blur = ['blur-lg', 'blur-md', 'blur', 'blur-sm', 'blur-none'][hintIndex]
 
-  return <main className="flex min-h-screen flex-col items-center p-8">
+  return <main className="flex min-h-screen flex-col items-center min-h-s">
     {gameState == 1 &&
       <Confetti/>
     }
-    <Title className="pb-4">Shenius</Title>
+    <Box className="left-0 top-0 p-4 absolute">
+      <ActionIcon size={38} component={Link} href='/add'>
+        <Plus/>
+      </ActionIcon>
+    </Box>
     <Skeleton width={300} visible={image == ""}>
       <Image src={'/pictures/' + image} width={300} height={300} className={'duration-100 my-4 ' + blur}/>
     </Skeleton>

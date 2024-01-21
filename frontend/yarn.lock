@@ -4013,6 +4013,7 @@ __metadata:
     react-canvas-confetti: "npm:^2.0.5"
     react-dom: "npm:18.2.0"
     sharp: "npm:^0.33.2"
+    tabler-icons-react: "npm:^1.56.0"
     tailwind: "npm:^4.0.0"
     tailwindcss: "npm:^3.4.1"
     typescript: "npm:5.2.2"
@@ -5967,6 +5968,15 @@ __metadata:
   version: 6.1.1
   resolution: "tabbable@npm:6.1.1"
   checksum: 72aae6dde28c79433f8fdb20d26c91873bb57ae8d4af6924bdb08a7c9213e210c6dc299dda13186b825ebd77398a5fd9ce01fecbb5201b00c6665bb6055094c7
+  languageName: node
+  linkType: hard
+
+"tabler-icons-react@npm:^1.56.0":
+  version: 1.56.0
+  resolution: "tabler-icons-react@npm:1.56.0"
+  peerDependencies:
+    react: ">= 16.8.0"
+  checksum: 65706011940ead0c6e39771fddce31aae11966e31a1da5bbddeaaa2b4d00b589fbdb8722bbd90af2a537ea2a69ff78b254c6f59bca04b02dca3deac38e1d2615
   languageName: node
   linkType: hard
 
