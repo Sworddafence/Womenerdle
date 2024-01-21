@@ -247,12 +247,9 @@ def score_add():
         #     "name": "Tenth",
         #     "score": 1
         # }
-        print("TEST")
         data = request.get_json()
         name = data.get('name')
         score = data.get('score')
-        print(name)
-        print(score)
         #return "L"
         existing_player = Player.query.filter_by(name=data['name']).first()
         if existing_player:
@@ -276,7 +273,7 @@ def score_add():
         }
         players_data.append(player_data)
 
-    return jsonify({'players': players_data})
+    return json.dump({'players': players_data})
 
 
 @app.route('/score', methods=['GET', 'POST'])
@@ -297,7 +294,7 @@ def score():
         }
         players_data.append(player_data)
 
-    return jsonify({'players': players_data})
+    return json.dump({'players': players_data})
   
 @app.route('/picture_upload', methods=['POST'])
 def pictures():
