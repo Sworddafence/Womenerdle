@@ -1,13 +1,14 @@
 import "@mantine/core/styles.css";
 import '@mantine/notifications/styles.css';
+import theme from "./theme";
 
 import React from "react";import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 
-export const metadata = {
-  title: "Shenius",
-  description: "game",
-};
+// export const metadata = {
+//   title: "Shenius",
+//   description: "game",
+// };
 
 import "./globals.css";
 
@@ -31,3 +32,4 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+

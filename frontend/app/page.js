@@ -5,6 +5,7 @@ import Hint from "./components/Hint";
 import { useState, useEffect } from "react";
 import { notifications } from "@mantine/notifications";
 import Image from "next/image";
+import RootLayout from "./layout";
 
 export default function HomePage() {
   const [hints, setHints] = useState([]);
@@ -65,7 +66,7 @@ export default function HomePage() {
   const blur = ['blur-lg', 'blur-md', 'blur', 'blur-sm', 'blur-none'][hintIndex]
 
   return <main className="flex min-h-screen flex-col items-center p-8">
-    <Title className="pb-4">Shenius</Title>
+    <Title className="pb-4"style={{fontFamily: 'Poppins', fontSize: '40', color: '#fffffe' }}>Shenius</Title>
     <Skeleton width={300} visible={image == ""}>
       <Image src={'/pictures/' + image} width={300} height={300} className={'duration-100 my-4 ' + blur}/>
     </Skeleton>
@@ -76,7 +77,7 @@ export default function HomePage() {
       {
         [1, 2, 3, 4, 5].map(i => {
           if (i <= hintIndex + 1)
-            return <Button key={i} className="mx-2 my-4" radius={1000} onClick={() => setHint(hints[i - 1])}>{i}</Button>
+            return <Button variant = "outline" color = "#ffc0ad" key={i} className="mx-2 my-4" radius={1000} onClick={() => setHint(hints[i - 1])}>{i}</Button>
           else
             return <Button key={i} className="mx-2 my-4" radius={1000} disabled>{i}</Button>
         })
@@ -84,8 +85,15 @@ export default function HomePage() {
     </div>
 
     <form className="flex flex-row items-end m-4" onSubmit={check}>
-      <Autocomplete data={womanList.sort()} limit={6} placeholder="Guess a historic woman!" onChange={setGuess} disabled={gameOver}/>
-      <Button onClick={check} disabled={gameOver}>Check</Button>
+      <Autocomplete data={womanList.sort()} limit={6} placeholder="Guess a historic woman!" onChange={setGuess} disabled={gameOver}
+       styles={{
+        input: {
+          color: '#271c19',
+          backgroundColor: '#ffc0ad', // Add your desired background color here
+          // Add any other styling properties as needed
+        },
+      }}/>
+      <Button color = "blue" onClick={check} disabled={gameOver}>Check</Button>
     </form>
 
     {gameOver &&
