@@ -262,7 +262,8 @@ def score_add():
             db.session.commit()
         
 
-    all_players = Player.query.order_by(Player.score.asc()).all()    
+    all_players = Player.query.order_by(Player.score.asc()).limit(10).all()
+  
     players_data = []
     for player in all_players:
         player_data = {
@@ -272,7 +273,7 @@ def score_add():
         }
         players_data.append(player_data)
 
-    return json.dump({'players': players_data})
+    return jsonify({'players': players_data})
 
 
 @app.route('/score', methods=['GET', 'POST'])
@@ -281,7 +282,8 @@ def score():
 
 
 
-    all_players = Player.query.order_by(Player.score.asc()).all()
+    all_players = Player.query.order_by(Player.score.asc()).limit(10).all()
+
 
     
     players_data = []
@@ -293,7 +295,7 @@ def score():
         }
         players_data.append(player_data)
 
-    return json.dump({'players': players_data})
+    return jsonify({'players': players_data})
   
 @app.route('/picture_upload', methods=['POST'])
 def pictures():
