@@ -1,10 +1,12 @@
 'use client';
 
-import { Autocomplete, Box, Button, Skeleton, Title } from "@mantine/core";
-import Hint from "./components/Hint";
 import { useState, useEffect } from "react";
+import { Autocomplete, Box, Button, Skeleton, Title } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import Image from "next/image";
+import Hint from "./components/Hint";
+import Confetti from "./components/Confetti";
+import Fireworks from "react-canvas-confetti/dist/presets/fireworks";
 
 export default function HomePage() {
   const [hints, setHints] = useState([]);
@@ -18,7 +20,7 @@ export default function HomePage() {
   const [answer, setAnswer] = useState("");
   const [guess, setGuess] = useState("");
 
-  const [gameOver, setGameOver] = useState(false);
+  const [gameState, setGameState] = useState(0);
 
   useEffect(() => {
     fetch("http://localhost:5000/hints")
@@ -47,16 +49,16 @@ export default function HomePage() {
     if (guess === answer) {
       notifications.show({ title: "Correct!", message: "You guessed correctly!", color: "green" });
       setHintIndex(5)
-      setGameOver(true)
+      setGameState(1)
     } else {
       if (hintIndex < 4) {
         notifications.show({ title: "Wrong!", message: "You guessed wrong! Try again!", color: "red" });
         setHintIndex(hintIndex + 1)
         setHint(hints[hintIndex + 1])
       } else {
-        if (!gameOver) {
-          notifications.show({ title: "Game over.", message: "Womp womp", color: "red" });
-          setGameOver(true)
+        if (!gameState) {
+          notifications.show({ title: `Game over. This woman is ${answer}!`, message: "Womp womp", color: "red" });
+          setGameState(2)
         }
       }
     }
@@ -65,6 +67,9 @@ export default function HomePage() {
   const blur = ['blur-lg', 'blur-md', 'blur', 'blur-sm', 'blur-none'][hintIndex]
 
   return <main className="flex min-h-screen flex-col items-center p-8">
+    {gameState == 1 &&
+      <Confetti/>
+    }
     <Title className="pb-4">Shenius</Title>
     <Skeleton width={300} visible={image == ""}>
       <Image src={'/pictures/' + image} width={300} height={300} className={'duration-100 my-4 ' + blur}/>
@@ -82,13 +87,12 @@ export default function HomePage() {
         })
       }
     </div>
-
     <form className="flex flex-row items-end m-4" onSubmit={check}>
-      <Autocomplete data={womanList.sort()} limit={6} placeholder="Guess a historic woman!" onChange={setGuess} disabled={gameOver}/>
-      <Button onClick={check} disabled={gameOver}>Check</Button>
+      <Autocomplete data={womanList.sort()} limit={6} placeholder="Guess a historic woman!" onChange={setGuess} disabled={gameState > 0}/>
+      <Button onClick={check} disabled={gameState > 0}>Check</Button>
     </form>
 
-    {gameOver &&
+    {gameState > 0 &&
       <Button onClick={() => window.location.reload()} className="m-4">Next Game</Button>
     }
   </main>;
