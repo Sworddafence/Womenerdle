@@ -29,16 +29,21 @@ Guess Who? Shenius Game is an interactive web game where players guess influenti
 - **Educational:** Learn about the achievements and contributions of remarkable women while having fun.
 
 ## Screenshots
-
+![image](https://github.com/Sworddafence/Womenerdle/assets/93165494/00c2355a-ecd5-4ab1-ad53-63791d356ccd)
+The first hint and blurred picture of an influential woman in history.
+![image](https://github.com/Sworddafence/Womenerdle/assets/93165494/d77e3256-0f77-48cb-965a-216a80685ebe)
+The fifth hint, along with an unblurred photo, discloses Virginia Woolf as the answer. An unsuccessful attempt message is displayed, accompanied by a button inviting the user to play the next game. 
+![image](https://github.com/Sworddafence/Womenerdle/assets/93165494/728b76fd-d342-4d11-9b16-5eeb24612aae)
+A scoreboard showcasing users' scores and ranks.
 
 ## Try It Out
 
-Visit [Shenius Game](#) to play the game and test your knowledge about influential women!
+Visit [Shenius Game](www.shenius.tech) to play the game and test your knowledge about influential women!
 
 
 ## Acknowledgments
 
-- Special thanks to 
+- Special thanks to our friends, supporters, and mentors during this hackathon.
 
 ---
 
