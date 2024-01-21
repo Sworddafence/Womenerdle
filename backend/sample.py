@@ -1,10 +1,11 @@
+
+from flask import Flask, render_template, request, redirect, session, jsonify
 from crypt import methods
-from flask import Flask, render_template, request, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
 import json
-from databases import db, SuperVar, User
+from databases import db, SuperVar, User, Player
 from multiprocessing import Value
 counter = Value('i', 0)
 autocorrectkey = ["Harriet Tubman", "Ruth Bader Ginsburg", "Amelia Earhart", "Ada Lovelace", "Virginia Woolf", "Maya Angelou", "Rosa Parks", "Serena Williams", "Simone Biles", "Susan B. Anthony", "Cleopatra", "Marie Curie", "Anne Frank", "Rosalind Franklin", "Grace Hopper", "Helen Keller", "Dolly Parton", "Greta Thunberg", "Sojourner Truth", "Ida B. Wells", "Malala Yousafzai", "Joan of Arc", "Emily Wilding Davison", "Emmeline Pankhurst", "Queen Elizabeth I", "Mary Wollstonecraft", "Indira Gandhi", "Chien-Shiung Wu", "Tawakkol Karman", "Wangari Maathai", "Sinead O'Connor", "Toni Morrison", "Anita Hill", "Gloria Steinem", "Angela Davis", "Marsha P. Johnson", "Simone de Beauvoir", "Fannie Lou", "Dolores Huerta", "Frida Kahlo", "Jane Austen", "Florence Nightingale", "Michelle Obama", "Oprah Winfrey", "Emily Dickinson", "Clara Barton", "Audre Lorde", "Mary Shelley", "Jane Goodall", "Hillary Clinton", "Coco Chanel", "Queen Victoria", "Katherine Johnson", "Margaret Atwood", "Anne Sullivan", "Sacagawea", "Marie Antoinette", "Hellen Keller", "Aung San Suu Kyi", "Benazir Bhutto", "Billie Holiday", "Marie Stopes", "Dorothy Hodgkin", "Barbara McClintock", "Kimberle Crenshaw", "Gloria Anzaldúa", "Cherrie Moraga", "Wilma Mankiller", "Qiu Jin", "Leta Hong Fincher", "Ai Xiaoming", "Lu Pin", "Chun Kyung-ja", "Hedy Lamarr", "Barbara Liskov", "Shafi Goldwasser", "Radia Perlman", "Karen Sparck Jones", "Anita Borg", "Marissa Mayer", "Fei-Fei Li", "Jennifer Widom", "Susan Kare", "Mary Lou Jepsen", "Brenda Laurel", "Elizabeth Blackwell", "Virginia Apgar", "Gerty Cori", "Helen Brooke Taussig", "Dorothy Crowfoot Hodgkin", "Christiane Nüsslein-Volhard", "Gertrude B. Elion", "Jane C. Wright", "Mary Edwards Walker", "Patricia Bath", "Pauline Chen", "Rita Levi-Montalcini", "Lynn Margulis", "Elizabeth Blackburn", "Jennifer Doudna", "Carol Greider", "Martha Chase", "Barbara Seaman", "Rachel Carson", "Dian Fossey", "Mary Anning", "Silvia Federici", "Sheila Rowbotham", "Rosa Luxemburg", "Alexandra Kollontai", "Clara Zetkin", "Juliet Mitchell", "Frigga Haug", "Nancy Fraser", "Selma James", "Heidi Hartmann", "Gayatri Chakravorty Spivak", "Maria Mies", "Zillah Eisenstein", "Iris Marion Young", "Silvia Walby", "Colette Guillaumin", "bell hooks", "Lise Vogel", "Nancy Hartsock", "Kate Millett", "Shulamith Firestone", "Rebecca Walker", "Naomi Wolf", "Judith Butler", "Chimamanda Ngozi Adichie", "Jessica Valenti", "Sor Juana Inez de la Cruz", "Rosario Castellanos", "Elena Poniatowska", "Julia de Burgos", "María Felix", "Leona Vicario", "Adela Velarde Pérez", "Graciela Iturbide", "Remedios Varo", "Gabriela Silang", "Cory Aquino", "Lea Salonga", "Miriam Defensor Santiago", "Maria Ressa", "Pia Alonzo Wurtzbach", "Imelda Marcos", "Gloria Macapagal-Arroyo", "Loida Nicolas Lewis", "Gilda Cordero-Fernando", "Ellen Johnson Sirleaf", "Miriam Makeba", "Funmilayo Ransome-Kuti", "Ama Ata Aidoo", "Leymah Gbowee", "Fatou Bensouda", "Lupita Nyong'o", "Yaa Asantewaa" ]
@@ -19,10 +20,8 @@ migrate = Migrate(app, db)
 
 #def GrandUser()
 def add_comma_between_names(input_string):
-    # Split the input string into a list of names
     names = input_string.split('\n')
     
-    # Join the names with commas
     result = ', '.join(names)
     return result
 
@@ -47,7 +46,6 @@ with app.app_context():
 def home():
    
     #return render_template('index.html', user_input=None)
-    # Creating a dummy user for demonstration purposes
     new_user_data = {
         'name': 'Maya Angelou',
         'hint1': 'Renowned poet, memoirist, and civil rights activist.',
@@ -81,13 +79,11 @@ def home():
     existing_user = User.query.filter_by(name=new_user_data['name']).first()
    
     if existing_user:
-        # Update the existing user's hints or handle as needed
         existing_user.hint1 = new_user_data['hint1']
         existing_user.hint2 = new_user_data['hint2']
         existing_user.hint3 = new_user_data['hint3']
         existing_user.hint4 = new_user_data['hint4']
     else:
-        # Create a new user
         new_user = User(**new_user_data)
         db.session.add(new_user)
     
@@ -96,7 +92,6 @@ def home():
 
     db.session.commit()
 
-    # Fetch all users
     plusone = super_var.index + 1
     if(plusone > 8):
         plusone = 1
@@ -106,7 +101,6 @@ def home():
     print(f"user: {user}")
     print(f"session['index']: {session.get('index')}")
     if user is None or fakeuser is None:
-    # Add more debugging information
         print(f"Error: Unable to fetch user or fakeuser. plusone: {plusone}, super_var.index: {super_var.index}")
     #users = User.query.all()
     if request.method == 'POST':
@@ -245,11 +239,70 @@ def lists():
     data = {"array": user_names}
     return json.dumps(data)
     
+@app.route('/score_add', methods=['GET', 'POST'])
+def score_add():
+    if request.method == 'POST':
+
+        # data = {
+        #     "name": "Tenth",
+        #     "score": 1
+        # }
+        print("TEST")
+        data = request.get_json()
+        name = data.get('name')
+        score = data.get('score')
+        print(name)
+        print(score)
+        #return "L"
+        existing_player = Player.query.filter_by(name=data['name']).first()
+        if existing_player:
+            
+            score_to_add = data.get('score', 0)
+            existing_player.score += score_to_add
+            db.session.commit()
+        else:
+            new_player = Player(name=data.get('name'), score=data.get('score', 0))
+            db.session.add(new_player)
+            db.session.commit()
+        
+
+    all_players = Player.query.order_by(Player.score.asc()).all()    
+    players_data = []
+    for player in all_players:
+        player_data = {
+            'id': player.id,
+            'name': player.name,
+            'score': player.score
+        }
+        players_data.append(player_data)
+
+    return jsonify({'players': players_data})
+
+
+@app.route('/score', methods=['GET', 'POST'])
+def score():
+    
+
+
+
+    all_players = Player.query.order_by(Player.score.asc()).all()
+
+    
+    players_data = []
+    for player in all_players:
+        player_data = {
+            'id': player.id,
+            'name': player.name,
+            'score': player.score
+        }
+        players_data.append(player_data)
+
+    return jsonify({'players': players_data})
+  
 @app.route('/picture_upload', methods=['POST'])
 def pictures():
     data = request.form
     return json.dumps("jphnklsadjf")
-
 
 
 if __name__ == '__main__':
