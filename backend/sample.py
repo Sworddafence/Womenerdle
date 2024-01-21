@@ -91,7 +91,6 @@ def home():
 
 
     db.session.commit()
-
     plusone = super_var.index + 1
     if(plusone > 8):
         plusone = 1
@@ -302,14 +301,17 @@ def pictures():
         g_file = request.files
         print('Creating a new file')
         image = g_file['image']
-        image.save(os.path.join("../", "epic.jpeg"))
+        num = str(NUMOFWOMEN.value + 1)
+        epic = str("../frontend/public/pictures/" + num + "/")
+        os.mkdir(epic)
+        image.save(os.path.join(epic, "5.jpeg"))
         with NUMOFWOMEN.get_lock():
             NUMOFWOMEN.value += 1
         #binary_file = open("my_file.jpeg", "wb")
         #binary_file.write(g_file)
         #binary_file.close()
         print(g_file)
-        return NUMOFWOMEN.value 
+        return str(NUMOFWOMEN.value)
 
 @app.route('/hints_upload', methods=['POST'])
 def hintsup():
